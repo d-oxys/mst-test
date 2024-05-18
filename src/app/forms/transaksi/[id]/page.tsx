@@ -23,6 +23,7 @@ type Customer = {
 };
 
 const TablesPage = () => {
+  window.location.reload();
   const [totalHarga, setTotalHarga] = useState(0);
   const [ongkir, setOngkir] = useState(0);
   const [diskon, setDiskon] = useState(0);

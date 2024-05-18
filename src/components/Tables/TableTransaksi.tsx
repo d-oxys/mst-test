@@ -145,7 +145,6 @@ const TableThree = () => {
                     <button
                       onClick={() => {
                         router.push(`/forms/transaksi/${packageItem.kodeTransaksi}`);
-                        window.location.reload();
                       }}
                       className='hover:text-primary'
                     >
