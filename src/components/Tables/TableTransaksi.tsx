@@ -144,7 +144,7 @@ const TableThree = () => {
                   <div className='flex items-center space-x-3.5'>
                     <button
                       onClick={() => {
-                        router.push(`/forms/transaksi/${packageItem.kodeTransaksi}`);
+                        window.location.href = `/forms/transaksi/${packageItem.kodeTransaksi}`;
                       }}
                       className='hover:text-primary'
                     >
