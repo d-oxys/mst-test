@@ -10,9 +10,10 @@ type Customer = {
 
 type SelectGroupOneProps = {
   updateSelectedCustomer: (customer: Customer | null) => void;
+  selectedCustomer?: Customer | null;
 };
 
-const SelectGroupOne: React.FC<SelectGroupOneProps> = ({ updateSelectedCustomer }) => {
+const SelectGroupOne: React.FC<SelectGroupOneProps> = ({ updateSelectedCustomer, selectedCustomer }) => {
   const [selectedOption, setSelectedOption] = useState<string>('');
   const [isOptionSelected, setIsOptionSelected] = useState<boolean>(false);
   const [customers, setCustomers] = useState<Customer[]>([]);
@@ -26,6 +27,12 @@ const SelectGroupOne: React.FC<SelectGroupOneProps> = ({ updateSelectedCustomer 
       .then((response) => response.json())
       .then((data) => setCustomers(data.data));
   }, []);
+
+  useEffect(() => {
+    if (selectedCustomer) {
+      setSelectedOption(selectedCustomer.kode);
+    }
+  }, [selectedCustomer]);
 
   return (
     <div className='mb-4.5'>

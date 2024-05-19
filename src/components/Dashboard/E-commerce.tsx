@@ -9,6 +9,8 @@ type Product = {
   harga: number;
   kode: string;
   id: number;
+  hargaDiskon: number;
+  qty: number;
 };
 
 type Customer = {
@@ -18,11 +20,20 @@ type Customer = {
   nama: string;
 };
 
+type TransaksiBarang = Product & {
+  hargaDiskon: number;
+  qty: number;
+};
+
 type Transaction = {
-  kode: string;
-  id: number;
-  harga: number;
-  nama: string;
+  diskon: number;
+  ongkir: number;
+  totalYangHarusDibayar: number;
+  totalHarga: number;
+  customer: Customer;
+  kodeTransaksi: string;
+  tanggalTransaksi: string;
+  barang: Product[];
 };
 
 function formatRupiah(angka: number) {
@@ -78,7 +89,7 @@ const ECommerce: React.FC = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch('/api/produk');
+        const response = await fetch('/api/transaksi');
         const data = await response.json();
 
         if (data.status === 'ok') {
@@ -95,13 +106,20 @@ const ECommerce: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (transactionData) {
-      const total = transactionData.reduce((sum: number, transaction: Transaction) => sum + transaction.harga, 0);
-      setTotalProfit(total);
-    }
+    const calculateTotalProfit = () => {
+      let totalProfit = 0;
+      if (transactionData) {
+        transactionData.forEach((transaction) => {
+          const profitPerTransaction = transaction.barang.reduce((sum, barang) => sum + barang.hargaDiskon * barang.qty, 0);
+          totalProfit += profitPerTransaction;
+        });
+      }
+      setTotalProfit(totalProfit);
+    };
+
+    calculateTotalProfit();
   }, [transactionData]);
 
-  console.log('data transaksi ', transactionData);
   return (
     <>
       <div className='2xl:gap-7.5 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-6 xl:grid-cols-4'>
@@ -117,7 +135,7 @@ const ECommerce: React.FC = () => {
             />
           </svg>
         </CardDataStats>
-        <CardDataStats title='Total Profit' total={totalProfit ? totalProfit : 0} rate='4.35%' levelUp>
+        <CardDataStats title='Total Profit' total={totalProfit ? formatRupiah(totalProfit) : formatRupiah(0)} rate='4.35%' levelUp>
           <svg className='fill-primary dark:fill-white' width='20' height='22' viewBox='0 0 20 22' fill='none' xmlns='http://www.w3.org/2000/svg'>
             <path
               d='M11.7531 16.4312C10.3781 16.4312 9.27808 17.5312 9.27808 18.9062C9.27808 20.2812 10.3781 21.3812 11.7531 21.3812C13.1281 21.3812 14.2281 20.2812 14.2281 18.9062C14.2281 17.5656 13.0937 16.4312 11.7531 16.4312ZM11.7531 19.8687C11.2375 19.8687 10.825 19.4562 10.825 18.9406C10.825 18.425 11.2375 18.0125 11.7531 18.0125C12.2687 18.0125 12.6812 18.425 12.6812 18.9406C12.6812 19.4219 12.2343 19.8687 11.7531 19.8687Z'

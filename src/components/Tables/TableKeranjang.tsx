@@ -23,11 +23,13 @@ type Customer = {
 };
 
 type TableKeranjangProps = {
-  selectedData?: Barang[]; // Make selectedData optional
+  selectedData?: Barang[];
   updateTotalHarga: (total: number) => void;
   updateSelectedData: (data: Barang[]) => void;
+  tanggalTransaksi?: string | null;
   updateTanggalTransaksi: React.Dispatch<React.SetStateAction<string | null>>;
   updateSelectedCustomer: React.Dispatch<React.SetStateAction<Customer | null>>;
+  selectedCustomer?: Customer | null;
 };
 
 function formatRupiah(angka: number) {
@@ -37,7 +39,7 @@ function formatRupiah(angka: number) {
 }
 
 const TableKeranjang: React.FC<TableKeranjangProps> = (props) => {
-  const [localSelectedData, setLocalSelectedData] = useState<Barang[]>(props.selectedData || []); // Initialize with empty array if undefined
+  const [localSelectedData, setLocalSelectedData] = useState<Barang[]>(props.selectedData || []);
   const [isHidden, setIsHidden] = useState(false);
 
   useEffect(() => {
@@ -70,22 +72,16 @@ const TableKeranjang: React.FC<TableKeranjangProps> = (props) => {
 
     const total = newData.reduce((sum, item) => sum + item.subtotal, 0);
 
-    // Guard clause untuk memeriksa apakah newData berbeda dengan selectedData sebelumnya
     if (JSON.stringify(newData) !== JSON.stringify(props.selectedData)) {
       props.updateTotalHarga(total);
       props.updateSelectedData(newData);
     }
-
-    console.log(localSelectedData);
   }, [localSelectedData]);
 
   const [selectedOption, setSelectedOption] = useState<Barang | null>(null);
 
   useEffect(() => {
-    // Cari barang dalam localSelectedData yang sesuai dengan kode barang di selectedOption
     const matchingItem = localSelectedData.find((item) => item.kode === selectedOption?.kode);
-
-    // Jika barang ditemukan, perbarui selectedOption
     if (matchingItem) {
       setSelectedOption(matchingItem);
     }
@@ -115,8 +111,8 @@ const TableKeranjang: React.FC<TableKeranjangProps> = (props) => {
           <h3 className='font-medium text-black dark:text-white'>Rincian Transaksi</h3>
         </div>
         <div className='gap-5.5 p-6.5 flex flex-col'>
-          <DatePickerOne updateTanggalTransaksi={props.updateTanggalTransaksi} />
-          <SelectGroupOne updateSelectedCustomer={props.updateSelectedCustomer} />
+          <DatePickerOne updateTanggalTransaksi={props.updateTanggalTransaksi} tanggalTransaksi={props.tanggalTransaksi} />
+          <SelectGroupOne updateSelectedCustomer={props.updateSelectedCustomer} selectedCustomer={props.selectedCustomer} />
           <div className=''>
             {!isHidden && (
               <MultiSelect

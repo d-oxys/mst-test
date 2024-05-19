@@ -24,7 +24,7 @@ const TableProduk = ({ dataBarang, openModalEdit, deleteBarang }: TableProdukPro
 
   return (
     <div className='border-stroke shadow-default dark:border-strokedark dark:bg-boxdark sm:px-7.5 rounded-sm border bg-white px-5 pb-2.5 pt-6 xl:pb-1'>
-      <div className='max-w-full overflow-x-auto'>
+      <div className='max-h-[27rem] max-w-full overflow-x-auto overflow-y-auto'>
         <table className='w-full table-auto'>
           <thead>
             <tr className='bg-gray-2 dark:bg-meta-4 text-left'>

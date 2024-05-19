@@ -60,7 +60,15 @@ const TablesPage = () => {
     <div className='px-8 pt-8'>
       <Breadcrumb pageName='keranjang' />
       <div>
-        <TableKeranjang selectedData={selectedData} updateTotalHarga={setTotalHarga} updateSelectedData={setSelectedData} updateTanggalTransaksi={setTanggalTransaksi} updateSelectedCustomer={setSelectedCustomer} />
+        <TableKeranjang
+          selectedData={selectedData}
+          updateTotalHarga={setTotalHarga}
+          updateSelectedData={setSelectedData}
+          updateTanggalTransaksi={setTanggalTransaksi}
+          updateSelectedCustomer={setSelectedCustomer}
+          selectedCustomer={selectedCustomer}
+          tanggalTransaksi={tanggalTransaksi}
+        />
         <FormTransaksi kodeTransaksi={id} totalHarga={totalHarga} selectedData={selectedData} tanggalTransaksi={tanggalTransaksi} selectedCustomer={selectedCustomer} diskon={diskon} ongkir={ongkir} />
       </div>
     </div>

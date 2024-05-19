@@ -3,11 +3,13 @@ import flatpickr from 'flatpickr';
 import { useEffect } from 'react';
 
 type DatePickerOneProps = {
-  updateTanggalTransaksi: React.Dispatch<React.SetStateAction<string | null>>; // Tambahkan ini
+  updateTanggalTransaksi: React.Dispatch<React.SetStateAction<string | null>>;
+  tanggalTransaksi?: string | null;
 };
 
-const DatePickerOne: React.FC<DatePickerOneProps> = ({ updateTanggalTransaksi }) => {
+const DatePickerOne: React.FC<DatePickerOneProps> = ({ updateTanggalTransaksi, tanggalTransaksi }) => {
   useEffect(() => {
+    console.log(tanggalTransaksi);
     // Init flatpickr
     flatpickr('.form-datepicker', {
       mode: 'single',
@@ -28,7 +30,7 @@ const DatePickerOne: React.FC<DatePickerOneProps> = ({ updateTanggalTransaksi })
       <div className='relative'>
         <input
           className='form-datepicker border-stroke focus:border-primary active:border-primary dark:border-form-strokedark dark:bg-form-input dark:focus:border-primary w-full rounded border-[1.5px] bg-transparent px-5 py-3 font-normal outline-none transition'
-          placeholder='mm/dd/yyyy'
+          placeholder={tanggalTransaksi || 'mm/dd/yyyy'}
           data-class='flatpickr-right'
         />
 

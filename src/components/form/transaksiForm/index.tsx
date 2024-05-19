@@ -57,13 +57,20 @@ const FormTransaksi: React.FC<FormTransaksiProps> = (props) => {
   const totalYangHarusDibayar = props.totalHarga - Number(diskon.replace(/\./g, '')) + Number(ongkir.replace(/\./g, ''));
 
   const handleSubmit = async () => {
-    // Tambahkan validasi untuk selectedCustomer dan tanggalTransaksi
+    const diskonAngkaNormal = Number(diskon.replace(/\./g, ''));
+    const ongkirAngkaNormal = Number(ongkir.replace(/\./g, ''));
+
     if (!props.selectedCustomer) {
       toast.error('Silahkan pilih customer terlebih dahulu');
       return;
     }
     if (!props.tanggalTransaksi) {
       toast.error('Silahkan pilih tanggal terlebih dahulu');
+      return;
+    }
+
+    if (diskonAngkaNormal >= props.totalHarga) {
+      toast.error('Diskon Tidak Boleh Lebih Dari Total harga!!!');
       return;
     }
 
@@ -79,8 +86,8 @@ const FormTransaksi: React.FC<FormTransaksiProps> = (props) => {
           tanggalTransaksi: props.tanggalTransaksi,
           customer: props.selectedCustomer,
           totalHarga: props.totalHarga,
-          diskon: diskon,
-          ongkir: ongkir,
+          diskon: diskonAngkaNormal,
+          ongkir: ongkirAngkaNormal,
           totalYangHarusDibayar: totalYangHarusDibayar,
         }),
       });
